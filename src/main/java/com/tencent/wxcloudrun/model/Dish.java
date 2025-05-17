@@ -14,5 +14,7 @@ public class Dish {
     private String dishImageUrl;
     private String description;
     private BigDecimal price;
+    
+    @TableField(value = "is_available")
     private Boolean isAvailable;
 } 
