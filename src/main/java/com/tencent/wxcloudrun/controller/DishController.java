@@ -66,7 +66,7 @@ public class DishController {
      * @return 更新结果
      */
     @PutMapping("/{id}/status")
-    public ApiResponse<Boolean> updateStatus(@PathVariable Integer id, @RequestParam Boolean isAvailable) {
+    public ApiResponse<Boolean> updateStatus(@PathVariable Integer id, @RequestParam("isAvailable") Boolean isAvailable) {
         return ApiResponse.success(dishService.updateAvailableStatus(id, isAvailable));
     }
 
