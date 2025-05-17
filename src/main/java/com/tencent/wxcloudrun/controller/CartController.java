@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.model.Cart;
+import com.tencent.wxcloudrun.model.response.ApiResponse;
 import com.tencent.wxcloudrun.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,27 +15,27 @@ public class CartController {
     private CartService cartService;
 
     @GetMapping("/user/{userId}")
-    public List<Cart> getUserCart(@PathVariable Integer userId) {
-        return cartService.getUserCart(userId);
+    public ApiResponse<List<Cart>> getUserCart(@PathVariable Integer userId) {
+        return ApiResponse.success(cartService.getUserCart(userId));
     }
 
     @PostMapping
-    public boolean add(@RequestBody Cart cart) {
-        return cartService.save(cart);
+    public ApiResponse<Boolean> add(@RequestBody Cart cart) {
+        return ApiResponse.success(cartService.save(cart));
     }
 
     @PutMapping("/{id}/quantity")
-    public boolean updateQuantity(@PathVariable Integer id, @RequestParam Integer quantity) {
-        return cartService.updateQuantity(id, quantity);
+    public ApiResponse<Boolean> updateQuantity(@PathVariable Integer id, @RequestParam Integer quantity) {
+        return ApiResponse.success(cartService.updateQuantity(id, quantity));
     }
 
     @DeleteMapping("/user/{userId}")
-    public boolean clearUserCart(@PathVariable Integer userId) {
-        return cartService.clearUserCart(userId);
+    public ApiResponse<Boolean> clearUserCart(@PathVariable Integer userId) {
+        return ApiResponse.success(cartService.clearUserCart(userId));
     }
 
     @DeleteMapping("/{id}")
-    public boolean removeItem(@PathVariable Integer id) {
-        return cartService.removeById(id);
+    public ApiResponse<Boolean> removeItem(@PathVariable Integer id) {
+        return ApiResponse.success(cartService.removeById(id));
     }
 } 

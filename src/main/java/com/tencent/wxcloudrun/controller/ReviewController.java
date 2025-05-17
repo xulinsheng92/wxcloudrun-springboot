@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.model.Review;
+import com.tencent.wxcloudrun.model.response.ApiResponse;
 import com.tencent.wxcloudrun.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,22 +15,22 @@ public class ReviewController {
     private ReviewService reviewService;
 
     @GetMapping("/order-detail/{orderDetailId}")
-    public List<Review> getOrderDetailReviews(@PathVariable Integer orderDetailId) {
-        return reviewService.getOrderDetailReviews(orderDetailId);
+    public ApiResponse<List<Review>> getOrderDetailReviews(@PathVariable Integer orderDetailId) {
+        return ApiResponse.success(reviewService.getOrderDetailReviews(orderDetailId));
     }
 
     @GetMapping("/user/{userId}")
-    public List<Review> getUserReviews(@PathVariable Integer userId) {
-        return reviewService.getUserReviews(userId);
+    public ApiResponse<List<Review>> getUserReviews(@PathVariable Integer userId) {
+        return ApiResponse.success(reviewService.getUserReviews(userId));
     }
 
     @PostMapping
-    public boolean createReview(@RequestBody Review review) {
-        return reviewService.createReview(review);
+    public ApiResponse<Boolean> createReview(@RequestBody Review review) {
+        return ApiResponse.success(reviewService.createReview(review));
     }
 
     @GetMapping("/{id}")
-    public Review getById(@PathVariable Integer id) {
-        return reviewService.getById(id);
+    public ApiResponse<Review> getById(@PathVariable Integer id) {
+        return ApiResponse.success(reviewService.getById(id));
     }
 } 
