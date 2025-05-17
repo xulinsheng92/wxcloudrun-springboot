@@ -18,6 +18,14 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         return list(queryWrapper);
     }
     
+    /**
+     * 获取所有菜品（包含不可用）
+     */
+    @Override
+    public List<Dish> getAllDishes() {
+        return list();
+    }
+    
     @Override
     public boolean updateAvailableStatus(Integer dishId, Boolean isAvailable) {
         Dish dish = new Dish();
