@@ -28,6 +28,26 @@ public class DishController {
     }
 
     /**
+     * 根据分类ID获取可用菜品列表
+     * @param categoryId 分类ID
+     * @return 可用菜品列表
+     */
+    @GetMapping("/category/{categoryId}/available")
+    public ApiResponse<List<Dish>> getAvailableDishesByCategory(@PathVariable Integer categoryId) {
+        return ApiResponse.success(dishService.getAvailableDishesByCategory(categoryId));
+    }
+
+    /**
+     * 根据分类ID获取所有菜品列表
+     * @param categoryId 分类ID
+     * @return 所有菜品列表
+     */
+    @GetMapping("/category/{categoryId}")
+    public ApiResponse<List<Dish>> getAllDishesByCategory(@PathVariable Integer categoryId) {
+        return ApiResponse.success(dishService.getAllDishesByCategory(categoryId));
+    }
+
+    /**
      * 根据ID获取菜品信息
      * @param id 菜品ID
      * @return 菜品信息
@@ -66,8 +86,19 @@ public class DishController {
      * @return 更新结果
      */
     @PutMapping("/{id}/status")
-    public ApiResponse<Boolean> updateStatus(@PathVariable Integer id, @RequestParam("isAvailable") Boolean isAvailable) {
+    public ApiResponse<Boolean> updateStatus(@PathVariable Integer id, @RequestParam Boolean isAvailable) {
         return ApiResponse.success(dishService.updateAvailableStatus(id, isAvailable));
+    }
+
+    /**
+     * 更新菜品排序
+     * @param id 菜品ID
+     * @param sortOrder 排序号
+     * @return 更新结果
+     */
+    @PutMapping("/{id}/sort")
+    public ApiResponse<Boolean> updateSort(@PathVariable Integer id, @RequestParam Integer sortOrder) {
+        return ApiResponse.success(dishService.updateSortOrder(id, sortOrder));
     }
 
     /**

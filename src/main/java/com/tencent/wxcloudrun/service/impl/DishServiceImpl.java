@@ -14,7 +14,8 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
     @Override
     public List<Dish> getAvailableDishes() {
         LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Dish::getIsAvailable, true);
+        queryWrapper.eq(Dish::getIsAvailable, true)
+                   .orderByAsc(Dish::getSortOrder);
         return list(queryWrapper);
     }
     
@@ -23,7 +24,9 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
      */
     @Override
     public List<Dish> getAllDishes() {
-        return list();
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.orderByAsc(Dish::getSortOrder);
+        return list(queryWrapper);
     }
     
     @Override
@@ -31,6 +34,31 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         Dish dish = new Dish();
         dish.setDishId(dishId);
         dish.setIsAvailable(isAvailable);
+        return updateById(dish);
+    }
+    
+    @Override
+    public List<Dish> getAvailableDishesByCategory(Integer categoryId) {
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Dish::getCategoryId, categoryId)
+                   .eq(Dish::getIsAvailable, true)
+                   .orderByAsc(Dish::getSortOrder);
+        return list(queryWrapper);
+    }
+    
+    @Override
+    public List<Dish> getAllDishesByCategory(Integer categoryId) {
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Dish::getCategoryId, categoryId)
+                   .orderByAsc(Dish::getSortOrder);
+        return list(queryWrapper);
+    }
+    
+    @Override
+    public boolean updateSortOrder(Integer dishId, Integer sortOrder) {
+        Dish dish = new Dish();
+        dish.setDishId(dishId);
+        dish.setSortOrder(sortOrder);
         return updateById(dish);
     }
 } 

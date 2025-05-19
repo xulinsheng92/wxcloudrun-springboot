@@ -7,14 +7,30 @@ CREATE TABLE `cart` (
   PRIMARY KEY (`cart_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='购物车表'
 
+CREATE TABLE `dish_categories` (
+  `category_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '分类唯一标识',
+  `category_name` varchar(50) NOT NULL COMMENT '分类名称',
+  `sort_order` int(11) DEFAULT 0 COMMENT '排序号（数字越小越靠前）',
+  `is_available` tinyint(1) DEFAULT 1 COMMENT '是否可用（0不可用，1可用）',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='菜品分类表'
+
 CREATE TABLE `dishes` (
   `dish_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '菜品唯一标识',
+  `category_id` int(11) DEFAULT NULL COMMENT '分类ID（外键关联dish_categories）',
   `dish_name` varchar(100) DEFAULT '' COMMENT '菜品名称',
   `dish_image_url` varchar(255) DEFAULT '' COMMENT '菜品图片URL',
   `description` text COMMENT '菜品描述',
   `price` decimal(10,2) DEFAULT NULL COMMENT '菜品价格',
   `is_available` tinyint(1) DEFAULT NULL COMMENT '是否可点（0不可点，1可点）',
-  PRIMARY KEY (`dish_id`)
+  `sort_order` int(11) DEFAULT 0 COMMENT '排序号（数字越小越靠前）',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`dish_id`),
+  KEY `idx_category_id` (`category_id`),
+  CONSTRAINT `fk_dish_category` FOREIGN KEY (`category_id`) REFERENCES `dish_categories` (`category_id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='菜品表'
 
 CREATE TABLE `order_details` (
@@ -30,7 +46,7 @@ CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL COMMENT '订单唯一标识',
   `user_id` int(11) DEFAULT NULL COMMENT '用户ID（外键关联users）',
   `total_amount` decimal(10,2) DEFAULT NULL COMMENT '订单总金额',
-  `order_status` varchar(20) DEFAULT '' COMMENT '订单状态（如“待付款”、“待出菜”、“已完成”）',
+  `order_status` varchar(20) DEFAULT '' COMMENT '订单状态（如"待付款"、"待出菜"、"已完成"）',
   `created_at` datetime DEFAULT NULL COMMENT '下单时间',
   `updated_at` datetime DEFAULT NULL COMMENT '订单状态更新时间',
   PRIMARY KEY (`order_id`)
